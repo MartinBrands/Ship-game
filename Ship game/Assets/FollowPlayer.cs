@@ -5,7 +5,7 @@ public class FollowPlayer : MonoBehaviour {
 
     public GameObject player;
     [SerializeField]
-    private Vector3 offset = new Vector3(-30, 30, -30);
+    private Vector3 offset = new Vector3(0, 30, -30);
 	// Use this for initialization
 	void Start () {
 		
