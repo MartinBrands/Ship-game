@@ -2,7 +2,7 @@
 
 public class PlayerMovement : MonoBehaviour {
 
-    public Transform playerPosition;
+    public new Rigidbody rigidbody;
     private Vector3 moveUp = new Vector3(10, 0, 10);
     private Vector3 moveDown = new Vector3(-10, 0, -10);
     private Vector3 moveLeft = new Vector3(-10, 0, 10);
@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour {
         
         if(Input.GetKey(KeyCode.UpArrow) )
         {
+            //rigidbody.AddForce(100,0,0);
             transform.Translate(moveUp * Time.deltaTime);
             //playerPosition.position = playerPosition.position + moveUp * Time.deltaTime;
         }
