@@ -23,35 +23,35 @@ public class PlayerMovement : MonoBehaviour {
         forceToAdd = Vector3.zero;
         if(Input.GetKey(KeyCode.W))
         {
-            //rigidbody.AddForce(moveUp * Time.deltaTime * speedBoost * speedFactor);
             forceToAdd = forceToAdd + (moveUp * Time.deltaTime * speedBoost * speedFactor);
-            //transform.Translate(moveUp * Time.deltaTime);
-            //playerPosition.position = playerPosition.position + moveUp * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
             forceToAdd = forceToAdd + (moveDown * Time.deltaTime * speedBoost * speedFactor);
-            //rigidbody.AddForce(moveDown * Time.deltaTime * speedBoost * speedFactor);
-            //transform.Translate(moveDown * Time.deltaTime);
-            //playerPosition.position = playerPosition.position + moveDown * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.A))
         {
             forceToAdd = forceToAdd + (moveLeft * Time.deltaTime * speedBoost * speedFactor);
-            //rigidbody.AddForce(moveLeft * Time.deltaTime * speedBoost * speedFactor);
-            //transform.Translate(moveLeft * Time.deltaTime);
-            //playerPosition.position = playerPosition.position + moveLeft * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.D))
         {
             forceToAdd = forceToAdd + (moveRight * Time.deltaTime * speedBoost * speedFactor);
-            //rigidbody.AddForce(moveRight * Time.deltaTime * speedBoost * speedFactor);
-            //transform.Translate(moveRight * Time.deltaTime);
-            //playerPosition.position = playerPosition.position + moveRight * Time.deltaTime;
         }
         forceToAdd.Normalize();
 
         rigidbody.AddForce(forceToAdd * Time.deltaTime * speedBoost * speedFactor);
         rigidbody.velocity = rigidbody.velocity * stopFactor;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("trigger: " + other.name);
+        speedFactor = 0.03f;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("release: " + other.name);
+        speedFactor = 0.3f;
     }
 }
