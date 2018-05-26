@@ -6,52 +6,50 @@ public class PlayerMovement : MonoBehaviour {
     private float speedBoost = 100000;
     [Range(0,1)]
     public float speedFactor = 0.5f;
-    [Range(1, 0)]
+    [Range(0.8f, 0.1f)]
     public float stopFactor = 0.5f;
     private Vector3 moveUp = new Vector3(0, 0, 1);
     private Vector3 moveDown = new Vector3(0, 0, -1);
     private Vector3 moveLeft = new Vector3(-1, 0, 0);
     private Vector3 moveRight = new Vector3(1, 0, 0);
     private Vector3 forceToAdd = new Vector3(0, 0, 0);
-    // Use this for initialization
-    void Start () {
-		
-	}
+	private Vector3 velocityMask;
+	private Vector3 newVelocity;
 	
-	// Update is called once per frame
 	void FixedUpdate () {
         forceToAdd = Vector3.zero;
         if(Input.GetKey(KeyCode.W))
         {
-            forceToAdd = forceToAdd + (moveUp * Time.deltaTime * speedBoost * speedFactor);
-        }
+			forceToAdd += moveUp;
+		}
         if (Input.GetKey(KeyCode.S))
         {
-            forceToAdd = forceToAdd + (moveDown * Time.deltaTime * speedBoost * speedFactor);
-        }
+			forceToAdd += moveDown;
+		}
         if (Input.GetKey(KeyCode.A))
         {
-            forceToAdd = forceToAdd + (moveLeft * Time.deltaTime * speedBoost * speedFactor);
-        }
+			forceToAdd += moveLeft;
+		}
         if (Input.GetKey(KeyCode.D))
         {
-            forceToAdd = forceToAdd + (moveRight * Time.deltaTime * speedBoost * speedFactor);
+            forceToAdd += moveRight;
         }
         forceToAdd.Normalize();
 
-        rigidbody.AddForce(forceToAdd * Time.deltaTime * speedBoost * speedFactor);
-        rigidbody.velocity = rigidbody.velocity * stopFactor;
-    }
+        rigidbody.AddForce(forceToAdd * Time.fixedDeltaTime * speedBoost * speedFactor);
+		newVelocity = rigidbody.velocity * stopFactor;
+		velocityMask.Set(1, 1 / stopFactor, 1);
+		newVelocity.Scale(velocityMask);
+		rigidbody.velocity = newVelocity;
+	}
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("trigger: " + other.name);
-        speedFactor = 0.03f;
+        speedFactor = 0.2f;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("release: " + other.name);
-        speedFactor = 0.3f;
+        speedFactor = 0.7f;
     }
 }
